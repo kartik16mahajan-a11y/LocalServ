@@ -1,0 +1,262 @@
+/* ==========================================================================
+   LocalServ - Global Theme & Design System
+   Designed for university frontend presentation: clean, semantic, and modular.
+   ========================================================================== */
+
+:root {
+  /* Brand Palette */
+  --primary: #5b4fe0;
+  --primary-light: #7a6ff0;
+  --primary-dark: #4338ca;
+  --secondary: #e0507a;
+  --secondary-light: #f47298;
+  --accent: #8b5cf6;
+  
+  /* Brand Gradients */
+  --brand-gradient: linear-gradient(135deg, #5b4fe0 0%, #8b5cf6 50%, #e0507a 100%);
+  --brand-gradient-hover: linear-gradient(135deg, #4d40d4 0%, #7c3aed 50%, #d83d6a 100%);
+  --card-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(246, 248, 255, 0.9) 100%);
+  --hero-bg-gradient: radial-gradient(circle at 10% 20%, rgba(91, 79, 224, 0.08) 0%, rgba(224, 80, 122, 0.05) 50%, rgba(255, 255, 255, 0) 80%);
+
+  /* Neutrals & Dark Text */
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+  --bg-page: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-alt: #f1f5f9;
+  --border-color: #e2e8f0;
+  --border-focus: #5b4fe0;
+
+  /* Status Colors */
+  --success: #10b981;
+  --success-bg: #ecfdf5;
+  --warning: #f59e0b;
+  --warning-bg: #fffbeb;
+  --info: #3b82f6;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 6px 16px rgba(91, 79, 224, 0.08);
+  --shadow-lg: 0 16px 32px rgba(91, 79, 224, 0.12);
+  --shadow-glow: 0 8px 24px rgba(91, 79, 224, 0.28);
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-full: 9999px;
+
+  /* Layout */
+  --container-max: 1320px;
+  --navbar-height: 80px;
+}
+
+/* Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text-main);
+  background-color: var(--bg-page);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Typography Defaults */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-main);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+p {
+  color: var(--text-muted);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* Layout Utilities */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section-wrapper {
+  padding: 5rem 0;
+  position: relative;
+}
+
+.section-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 3.5rem auto;
+}
+
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary);
+  background: rgba(91, 79, 224, 0.08);
+  border: 1px solid rgba(91, 79, 224, 0.2);
+  border-radius: var(--radius-full);
+  margin-bottom: 0.9rem;
+}
+
+.section-title {
+  font-size: 2.3rem;
+  font-weight: 800;
+  margin-bottom: 0.8rem;
+  color: var(--text-main);
+}
+
+.section-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.6rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--brand-gradient);
+  color: #ffffff;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover {
+  background: var(--brand-gradient-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+.btn-secondary {
+  background: #ffffff;
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+}
+
+.btn-outline:hover {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+/* Keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ======================================================================
+   Global Responsive Rules
+   These apply to every page since they target the shared .container,
+   .section-wrapper, .section-title classes
+   used throughout the site, instead of repeating the same rules per page.
+   ========================================================================== */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+  .section-wrapper {
+    padding: 3.5rem 0;
+  }
+  .section-title {
+    font-size: 1.85rem;
+  }
+  .section-subtitle {
+    font-size: 0.95rem;
+  }
+  .section-header {
+    margin-bottom: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+  .section-wrapper {
+    padding: 2.75rem 0;
+  }
+  .section-title {
+    font-size: 1.55rem;
+  }
+  
+
+/* Evaluation 1: interactive actions are intentionally disabled. */
+.app-layout button:disabled,
+.app-layout input:disabled,
+.app-layout select:disabled,
+.app-layout textarea:disabled {
+  cursor: not-allowed;
+}
+
+.app-layout button:disabled {
+  opacity: 0.72;
+}

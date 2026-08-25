@@ -247,7 +247,7 @@ button, input, select, textarea {
   .section-title {
     font-size: 1.55rem;
   }
-  
+}
 
 /* Evaluation 1: interactive actions are intentionally disabled. */
 .app-layout button:disabled,

@@ -6,6 +6,9 @@ import Footer from './layouts/Footer/Footer';
 
 import ServicesPage from './pages/Services/ServicesPage';
 import ConsumerProfile from './pages/ConsumerProfile/ConsumerProfile';
+import ProviderDashboard from './pages/ProviderDashboard/ProviderDashboard';
+import PlansPage from './pages/Plans/PlansPage';
+import { INITIAL_BOOKINGS } from './data/servicesData';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -32,7 +35,8 @@ function PlaceholderPage({ title }) {
 }
 
 function App() {
-  const noop = () => {};
+  const bookings = INITIAL_BOOKINGS;
+  const noop = () => { };
 
   return (
     <div className="app-layout">
@@ -48,6 +52,10 @@ function App() {
             path="/"
             element={<PlaceholderPage title="LocalServ" />}
           />
+          {/* <Route path="/" element={<HomePage onBookCategory={noop} />} />
+          <Route path="/services" element={<ServicesPage onBookCategory={noop} />} /> */}
+
+
 
           {/* Kartik's contribution */}
           <Route
@@ -61,25 +69,28 @@ function App() {
           />
 
           {/* Temporary pages for other team members */}
+
+          <Route path="/plans" element={<PlansPage onSelectPlan={noop} />} />
+
           <Route
             path="/bookings"
             element={<PlaceholderPage title="My Bookings" />}
           />
 
-          <Route
+          {/* <Route
             path="/plans"
             element={<PlaceholderPage title="Plans & Combos" />}
-          />
+          /> */}
 
-          <Route
+          {/* <Route
             path="/profile/provider"
             element={<PlaceholderPage title="Provider Profile" />}
+          /> */}
+          <Route
+            path="/profile/provider"
+            element={<ProviderDashboard currentUser={null} />}
           />
 
-          <Route
-            path="/dashboard"
-            element={<PlaceholderPage title="Provider Dashboard" />}
-          />
 
           {/* Unknown URL */}
           <Route

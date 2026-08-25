@@ -121,7 +121,7 @@ function Navbar({ currentUser = null, activeBookingsCount = 0 }) {
               👤 User Profile
             </Link>
             <Link to="/profile/provider" onClick={closeMobileMenu} className="btn btn-primary w-full">
-              🧰 Provider Profile
+              🧰 Provider Profil
             </Link>
             <button type="button" className="btn btn-secondary w-full" disabled>
               Sign In / Register

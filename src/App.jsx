@@ -3,9 +3,10 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 
 import Navbar from './layouts/Navbar/Navbar';
 import Footer from './layouts/Footer/Footer';
-
+import BookingsPage from './pages/Bookings/BookingsPage';
 import ServicesPage from './pages/Services/ServicesPage';
 import ConsumerProfile from './pages/ConsumerProfile/ConsumerProfile';
+import { INITIAL_BOOKINGS } from './data/servicesData';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -17,21 +18,11 @@ function ScrollToTop() {
   return null;
 }
 
-function PlaceholderPage({ title }) {
-  return (
-    <div className="container" style={{ padding: '5rem 1.5rem' }}>
-      <span className="section-badge">LocalServ</span>
-
-      <h1 className="section-title">{title}</h1>
-
-      <p className="section-subtitle">
-        This page will be added as part of the team's next contribution.
-      </p>
-    </div>
-  );
-}
-
 function App() {
+  // Evaluation 1 version: UI + routing only.
+  // No authentication, browser storage, booking persistence, popups, or toasts.
+  const bookings = INITIAL_BOOKINGS;
+
   const noop = () => {};
 
   return (
@@ -42,51 +33,39 @@ function App() {
 
       <main className="main-content-body">
         <Routes>
-
-          {/* Temporary Home Page */}
+          {/* <Route path="/" element={<HomePage onBookCategory={noop} />} /> */}
+          <Route path="/services" element={<ServicesPage onBookCategory={noop} />} />
           <Route
-            path="/"
-            element={<PlaceholderPage title="LocalServ" />}
+            path="/bookings"
+            element={
+              <BookingsPage
+                bookings={bookings}
+                onCancelBooking={noop}
+                onRescheduleBooking={noop}
+                onBookAgain={noop}
+                onOpenNewBooking={noop}
+              />
+            }
           />
+          {/* <Route path="/plans" element={<PlansPage onSelectPlan={noop} />} /> */}
 
-          {/* Kartik's contribution */}
+          {/* Static provider profile/dashboard page for Evaluation 1. */}
+          {/* <Route
+            path="/dashboard"
+            element={<ProviderDashboard currentUser={null} />}
+          />
           <Route
-            path="/services"
-            element={<ServicesPage onBookCategory={noop} />}
-          />
+            path="/profile/provider"
+            element={<ProviderDashboard currentUser={null} />}
+          /> */}
 
+          {/* Static customer profile page. */}
           <Route
             path="/profile/consumer"
             element={<ConsumerProfile currentUser={null} />}
           />
 
-          {/* Temporary pages for other team members */}
-          <Route
-            path="/bookings"
-            element={<PlaceholderPage title="My Bookings" />}
-          />
-
-          <Route
-            path="/plans"
-            element={<PlaceholderPage title="Plans & Combos" />}
-          />
-
-          <Route
-            path="/profile/provider"
-            element={<PlaceholderPage title="Provider Profile" />}
-          />
-
-          <Route
-            path="/dashboard"
-            element={<PlaceholderPage title="Provider Dashboard" />}
-          />
-
-          {/* Unknown URL */}
-          <Route
-            path="*"
-            element={<PlaceholderPage title="Page Not Found" />}
-          />
-
+          {/* <Route path="*" element={<HomePage onBookCategory={noop} />} /> */}
         </Routes>
       </main>
 

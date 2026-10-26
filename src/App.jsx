@@ -4,6 +4,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './layouts/Navbar/Navbar';
 import Footer from './layouts/Footer/Footer';
 
+import HomePage from './pages/Home/HomePage';
 import ServicesPage from './pages/Services/ServicesPage';
 import ConsumerProfile from './pages/ConsumerProfile/ConsumerProfile';
 import ProviderDashboard from './pages/ProviderDashboard/ProviderDashboard';
@@ -47,13 +48,7 @@ function App() {
       <main className="main-content-body">
         <Routes>
 
-          {/* Temporary Home Page */}
-          <Route
-            path="/"
-            element={<PlaceholderPage title="LocalServ" />}
-          />
-          {/* <Route path="/" element={<HomePage onBookCategory={noop} />} />
-          <Route path="/services" element={<ServicesPage onBookCategory={noop} />} /> */}
+          <Route path="/" element={<HomePage />} />
 
 
 

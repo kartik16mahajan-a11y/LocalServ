@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Navbar — sticky header, brand, nav links, auth action, mobile drawer.
+   Navbar — Redesigned: glassmorphism header, mega-smooth interactions
    ========================================================================== */
 
 .navbar-header {
@@ -8,20 +8,20 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   height: var(--navbar-height);
   display: flex;
   align-items: center;
 }
 
 .navbar-header.navbar-scrolled {
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
-  border-bottom-color: rgba(226, 232, 240, 1);
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.07), 0 1px 0 rgba(226, 232, 240, 0.9);
+  border-bottom-color: rgba(226, 232, 240, 0.9);
 }
 
 .navbar-container {
@@ -35,39 +35,56 @@
   gap: 2rem;
 }
 
-/* Brand */
+/* ── Brand ──────────────────────────────────────────────────────────── */
 .navbar-brand {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1.5rem;
+  gap: 0.55rem;
+  font-size: 1.45rem;
   font-weight: 800;
   letter-spacing: -0.03em;
   text-decoration: none;
   flex-shrink: 0;
+  transition: opacity 0.2s;
+}
+
+.navbar-brand:hover {
+  opacity: 0.85;
 }
 
 .brand-logo-icon {
-  font-size: 1.4rem;
-  animation: pulse 2s infinite ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--brand-gradient);
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.12); }
+.navbar-brand:hover .brand-logo-icon {
+  transform: rotate(-5deg) scale(1.05);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.45);
 }
 
 .brand-name {
-  color: #0f172a;
+  color: var(--text-main);
 }
 
 .brand-accent {
   background: var(--brand-gradient);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Desktop Navigation — evenly spaced, centered between brand and actions */
+/* ── Desktop Navigation ─────────────────────────────────────────────── */
 .navbar-desktop-nav {
   display: flex;
   align-items: center;
@@ -79,103 +96,132 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2.25rem;
+  gap: 0.25rem;
   list-style: none;
 }
 
 .nav-link-item {
-  font-size: 0.94rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: #334155;
-  padding: 0.4rem 0.1rem;
+  color: #475569;
+  padding: 0.5rem 0.85rem;
   position: relative;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, background 0.2s ease;
   text-decoration: none;
   display: flex;
   align-items: center;
   gap: 0.4rem;
   white-space: nowrap;
+  border-radius: var(--radius-full);
 }
 
-.nav-link-item:hover,
+.nav-link-item:hover {
+  color: var(--primary);
+  background: rgba(99, 102, 241, 0.06);
+}
+
 .nav-link-item.active {
   color: var(--primary);
-}
-
-.nav-link-item::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0%;
-  height: 2.5px;
-  background: var(--brand-gradient);
-  transition: width 0.2s ease;
-  border-radius: 2px;
-}
-
-.nav-link-item:hover::after,
-.nav-link-item.active::after {
-  width: 100%;
+  background: rgba(99, 102, 241, 0.08);
+  font-weight: 700;
 }
 
 .nav-badge-count {
   background: var(--secondary);
   color: #ffffff;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 800;
-  padding: 1px 7px;
+  padding: 1px 6px;
   border-radius: var(--radius-full);
   line-height: 1.5;
+  min-width: 18px;
+  text-align: center;
 }
 
-/* Right-side Actions */
+/* ── Right-side Actions ─────────────────────────────────────────────── */
 .navbar-actions {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   flex-shrink: 0;
 }
 
 .auth-btn {
-  background: transparent;
-  border: 1.5px solid #e2e8f0;
+  background: var(--brand-gradient);
+  border: none;
+  color: #ffffff;
   font-size: 0.88rem;
   font-weight: 600;
-  color: #0f172a;
-  padding: 0.55rem 1.25rem;
+  padding: 0.58rem 1.4rem;
   border-radius: var(--radius-full);
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
 }
 
 .auth-btn:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-  background: rgba(91, 79, 224, 0.04);
+  background: var(--brand-gradient-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+  color: #ffffff;
 }
 
-/* Logged-in user pill — the single entry point into the account/dashboard */
+/* Logged-in user pill */
 .user-badge-pill {
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  padding: 0.5rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-surface-alt);
+  border: 1.5px solid var(--border-color);
+  padding: 0.3rem 1rem 0.3rem 0.35rem;
   border-radius: var(--radius-full);
   font-size: 0.85rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text-main);
   text-decoration: none;
   transition: all 0.2s ease;
   white-space: nowrap;
 }
 
 .user-badge-pill:hover {
-  background: #e2e8f0;
-  border-color: #cbd5e1;
+  background: #e8eaff;
+  border-color: var(--primary-light);
+  color: var(--primary);
 }
 
-/* Mobile Hamburger Toggle */
+.user-badge-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--brand-gradient);
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.logout-btn {
+  background: transparent;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.5rem 0.6rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s;
+}
+
+.logout-btn:hover {
+  color: #dc2626;
+  background: #fff1f2;
+}
+
+/* ── Mobile Hamburger ───────────────────────────────────────────────── */
 .mobile-toggle-btn {
   display: none;
   flex-direction: column;
@@ -191,24 +237,25 @@
 .mobile-toggle-btn .bar {
   width: 100%;
   height: 2.5px;
-  background-color: #0f172a;
+  background-color: var(--text-main);
   border-radius: 2px;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Mobile Drawer */
+/* ── Mobile Drawer ──────────────────────────────────────────────────── */
 .mobile-nav-drawer {
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 15px 30px rgba(15, 23, 42, 0.12);
-  padding: 1.5rem;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+  padding: 1.5rem 1.5rem 2rem;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.25rem;
   animation: slideUp 0.25s ease-out;
 }
 
@@ -216,7 +263,7 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.25rem;
 }
 
 .mobile-links-list a {
@@ -225,14 +272,21 @@
   justify-content: space-between;
   font-size: 1rem;
   font-weight: 600;
-  color: #1e293b;
-  padding: 0.6rem 0;
-  border-bottom: 1px solid #f1f5f9;
+  color: var(--text-main);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
   text-decoration: none;
+  transition: all 0.2s;
+}
+
+.mobile-links-list a:hover {
+  background: rgba(99, 102, 241, 0.06);
+  color: var(--primary);
 }
 
 .mobile-links-list a.active {
   color: var(--primary);
+  background: rgba(99, 102, 241, 0.08);
   font-weight: 700;
 }
 
@@ -240,73 +294,22 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color);
 }
 
-/* ===== Responsive breakpoints ===== */
-
-/* Below this width the centered link list gets crowded — switch to the
-   hamburger drawer instead of letting links wrap awkwardly. */
+/* ── Responsive Breakpoints ─────────────────────────────────────────── */
 @media (max-width: 900px) {
-  .navbar-desktop-nav {
-    display: none;
-  }
-  .mobile-toggle-btn {
-    display: flex;
-  }
+  .navbar-desktop-nav { display: none; }
+  .mobile-toggle-btn { display: flex; }
+  .logout-btn { display: none; }
 }
 
 @media (max-width: 480px) {
-  .navbar-container {
-    padding: 0 1rem;
-    gap: 1rem;
-  }
-  .brand-name {
-    font-size: 1.05rem;
-  }
-  .auth-btn,
-  .user-badge-pill {
-    padding: 0.45rem 0.85rem;
-    font-size: 0.8rem;
-  }
-  .mobile-nav-drawer {
-    padding: 1.25rem 1rem;
-  }
-}
-
-
-
-/* Static profile navigation buttons - Evaluation 1 */
-.profile-nav-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.55rem 0.85rem;
-  border-radius: var(--radius-full);
-  font-size: 0.78rem;
-  font-weight: 700;
-  white-space: nowrap;
-  text-decoration: none;
-  border: 1px solid var(--border-color);
-  transition: all 0.2s ease;
-}
-
-.consumer-profile-btn {
-  color: var(--primary-dark);
-  background: rgba(91, 79, 224, 0.06);
-}
-
-.provider-profile-btn {
-  color: #be185d;
-  background: rgba(224, 80, 122, 0.07);
-}
-
-.profile-nav-btn:hover {
-  transform: translateY(-1px);
-  border-color: var(--primary-light);
-}
-
-@media (max-width: 1180px) {
-  .profile-nav-btn {
-    display: none;
-  }
+  .navbar-container { padding: 0 1rem; gap: 1rem; }
+  .brand-name { font-size: 1.05rem; }
+  .auth-btn { padding: 0.5rem 1rem; font-size: 0.82rem; }
+  .user-badge-name { display: none; }
+  .user-badge-pill { padding: 0.3rem; }
+  .mobile-nav-drawer { padding: 1.25rem 1rem 1.75rem; }
 }

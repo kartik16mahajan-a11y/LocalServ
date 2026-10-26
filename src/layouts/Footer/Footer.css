@@ -1,11 +1,297 @@
-/* Footer Stylesheet */
+/* Footer Stylesheet — Enhanced */
 
 .footer-root {
-  background: #0f172a;
+  --radius-xl: 32px;
+  background: linear-gradient(180deg, #0a0914 0%, #0f0e17 100%);
   color: #cbd5e1;
-  padding: 4rem 0 2rem 0;
+  padding: 5rem 0 2.5rem;
   position: relative;
+  overflow: hidden;
 }
+
+.footer-root::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent);
+}
+
+.footer-partner-banner {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(167, 139, 250, 0.08) 100%);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: var(--radius-xl);
+  padding: 2.2rem 2.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4.5rem;
+}
+
+.partner-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #818cf8;
+  letter-spacing: 0.07em;
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.partner-banner-text h3 {
+  color: #ffffff;
+  font-size: 1.4rem;
+  margin-bottom: 0.3rem;
+  letter-spacing: -0.02em;
+}
+
+.partner-banner-text p {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.92rem;
+}
+
+.partner-cta-btn {
+  background: var(--brand-gradient);
+  color: #ffffff;
+  border: none;
+  padding: 0.9rem 1.75rem;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+  flex-shrink: 0;
+}
+
+.partner-cta-btn:hover {
+  background: var(--brand-gradient-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.45);
+}
+
+.footer-main-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.4fr;
+  gap: 3rem;
+  margin-bottom: 4rem;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.brand-grad {
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.footer-bio {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.footer-trust-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.trust-pill {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.73rem;
+  font-weight: 600;
+  padding: 0.28rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+.footer-col-title {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  letter-spacing: -0.01em;
+}
+
+.footer-links-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.footer-links-list a {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.footer-links-list a:hover {
+  color: #ffffff;
+  padding-left: 4px;
+}
+
+.footer-cities-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.footer-city-tag {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.75rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-full);
+  transition: all 0.2s;
+}
+
+.footer-city-tag:hover {
+  background: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+}
+
+.footer-subscribe-form {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+
+.footer-subscribe-form input {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  padding: 0.6rem 0.9rem;
+  color: #ffffff;
+  font-size: 0.85rem;
+  flex: 1;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.footer-subscribe-form input:focus {
+  border-color: rgba(99, 102, 241, 0.5);
+}
+
+.footer-subscribe-form input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.footer-subscribe-form button {
+  background: var(--brand-gradient);
+  color: #ffffff;
+  border: none;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.footer-subscribe-form button:hover {
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+}
+
+.newsletter-success {
+  font-size: 0.78rem;
+  color: #4ade80;
+  margin-top: 0.4rem;
+}
+
+.footer-col-title-spaced {
+  margin-top: 1.5rem;
+}
+
+.city-check-result {
+  font-size: 0.78rem;
+  margin-top: 0.5rem;
+  line-height: 1.4;
+}
+
+.city-check-result.available { color: #4ade80; }
+.city-check-result.unavailable { color: #fbbf24; }
+
+.footer-bottom-bar {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.copyright-text { color: rgba(255, 255, 255, 0.3); }
+
+.legal-links {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.legal-links a {
+  color: rgba(255, 255, 255, 0.3);
+  transition: color 0.2s;
+}
+
+.legal-links a:hover { color: rgba(255, 255, 255, 0.7); }
+
+.dot { color: rgba(255, 255, 255, 0.15); }
+
+@media (max-width: 1024px) {
+  .footer-main-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+  .footer-partner-banner {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: flex-start;
+    padding: 2rem;
+  }
+  .partner-cta-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-main-grid { grid-template-columns: 1fr; }
+  .footer-bottom-bar {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}
+
+/* LS logo badge in footer */
+.brand-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 10px;
+  background: var(--brand-gradient); color: #ffffff;
+  font-size: 0.88rem; font-weight: 800; letter-spacing: -0.04em;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+}
+
 
 .footer-partner-banner {
   background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
@@ -249,4 +535,12 @@
     gap: 1rem;
     text-align: center;
   }
+}
+
+/* LS logo badge in the footer */
+.brand-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 10px;
+  background: var(--brand-gradient); color: #ffffff;
+  font-size: 0.9rem; font-weight: 800; letter-spacing: -0.04em;
 }

@@ -1,87 +1,146 @@
 import { useState, useEffect } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { useData } from '../../context/DataContext';
+import { useToast } from '../../context/ToastContext';
 import './Navbar.css';
 
-/**
- * Global sticky navbar.
- *
- * Only navigation (routing between pages) lives here — actions that belong
- * to a specific page (sign out, availability status, dashboard tabs, city
- * selection) live on that page instead, so the navbar stays short and the
- * same across every screen size.
- */
-function Navbar({ currentUser = null, activeBookingsCount = 0 }) {
+const GUEST_LINKS = [
+  { label: 'Home', path: '/' },
+  { label: 'Services', path: '/services' },
+  { label: 'Plans & Combos', path: '/plans' },
+  { label: 'Reviews', path: '/reviews' },
+];
+
+const USER_LINKS = [
+  { label: 'Home', path: '/' },
+  { label: 'Services', path: '/services' },
+  { label: 'My Bookings', path: '/bookings', hasBadge: true },
+  { label: 'Plans & Combos', path: '/plans' },
+  { label: 'Reviews', path: '/reviews' },
+];
+
+const PROVIDER_LINKS = [
+  { label: 'Home', path: '/' },
+  { label: 'Dashboard', path: '/provider' },
+  { label: 'Reviews', path: '/reviews' },
+];
+
+function getInitials(name = '') {
+  return name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join('');
+}
+
+function useOptionalAuth() {
+  const ctx = useAuth();
+  if (ctx && typeof ctx === 'object') {
+    return {
+      currentUser: ctx.currentUser ?? null,
+      openAuth: ctx.openAuth ?? (() => {}),
+      logout: ctx.logout ?? (() => {}),
+    };
+  }
+  return { currentUser: null, openAuth: () => {}, logout: () => {} };
+}
+
+function useOptionalBookings() {
+  const ctx = useData();
+  if (ctx && Array.isArray(ctx.bookings)) return ctx.bookings;
+  return [];
+}
+
+function useOptionalToast() {
+  const toast = useToast();
+  if (toast && typeof toast.showToast === 'function') return toast.showToast;
+  if (typeof toast === 'function') return toast;
+  return () => {};
+}
+
+function Navbar({ currentUser: currentUserProp = null, activeBookingsCount = 0 }) {
+  const { currentUser: authUser, openAuth, logout } = useOptionalAuth();
+  const bookings = useOptionalBookings();
+  const showToast = useOptionalToast();
+  const navigate = useNavigate();
+
+  const currentUser = authUser ?? currentUserProp;
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Add a subtle shadow once the page has scrolled past the top.
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const isProvider = false;
-  const isConsumer = false;
+  let navLinks = GUEST_LINKS;
+  if (currentUser?.role === 'user') navLinks = USER_LINKS;
+  if (currentUser?.role === 'provider') navLinks = PROVIDER_LINKS;
 
-  // Providers manage everything (dashboard / requests / active jobs) from
-  // tabs inside the Provider Dashboard page itself, so the navbar shows no
-  // links for them at all — just the brand and their profile pill.
-  const guestLinks = [
-    { label: 'Home', path: '/' },
-    { label: 'Services', path: '/services' },
-    { label: 'My Bookings', path: '/bookings', badge: activeBookingsCount },
-    { label: 'Plans & Combos', path: '/plans' },
-  ];
+  const activeCount = currentUser
+    ? bookings.filter((b) => b.userId === currentUser.id && (b.status === 'Pending' || b.status === 'Confirmed')).length
+    : activeBookingsCount;
 
-  const consumerLinks = guestLinks;
-  const navLinks = isProvider ? [] : isConsumer ? consumerLinks : guestLinks;
+  const accountPath = currentUser?.role === 'provider' ? '/profile/provider' : '/profile/consumer';
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
+
+  const handleLogin = () => {
+    closeMobileMenu();
+    openAuth('login', 'user');
+  };
+
+  const handleLogout = () => {
+    closeMobileMenu();
+    logout();
+    navigate('/');
+    showToast('You have been logged out.', 'info');
+  };
+
+  const renderLinks = (className) =>
+    navLinks.map((link) => (
+      <li key={link.label}>
+        <NavLink
+          to={link.path}
+          end={link.path === '/'}
+          onClick={closeMobileMenu}
+          className={({ isActive }) => `${className} ${isActive ? 'active' : ''}`}
+        >
+          {link.label}
+          {link.hasBadge && activeCount > 0 && <span className="nav-badge-count">{activeCount}</span>}
+        </NavLink>
+      </li>
+    ));
 
   return (
     <header className={`navbar-header ${scrolled ? 'navbar-scrolled' : ''}`}>
       <div className="navbar-container">
-        {/* Brand */}
         <Link to="/" className="navbar-brand" onClick={closeMobileMenu}>
-          <span className="brand-logo-icon">⭐</span>
+          <span className="brand-logo-icon">LS</span>
           <span className="brand-name">Local<span className="brand-accent">Serv</span></span>
         </Link>
 
-        {/* Desktop Navigation Links */}
         <nav className="navbar-desktop-nav">
-          <ul className="nav-link-list">
-            {navLinks.map((link) => (
-              <li key={link.label}>
-                <NavLink
-                  to={link.path}
-                  className={({ isActive }) => `nav-link-item ${isActive ? 'active' : ''}`}
-                  end={link.path === '/'}
-                >
-                  {link.label}
-                  {link.badge > 0 && (
-                    <span className="nav-badge-count">{link.badge}</span>
-                  )}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
+          <ul className="nav-link-list">{renderLinks('nav-link-item')}</ul>
         </nav>
 
-        {/* Right Actions */}
         <div className="navbar-actions">
-          <Link to="/profile/consumer" className="profile-nav-btn consumer-profile-btn">
-            👤 User Profile
-          </Link>
-          <Link to="/profile/provider" className="profile-nav-btn provider-profile-btn">
-            🧰 Provider Profile
-          </Link>
+          {currentUser ? (
+            <>
+              <Link to={accountPath} className="user-badge-pill">
+                <span className="user-badge-avatar">{getInitials(currentUser.name)}</span>
+                <span className="user-badge-name">{currentUser.name.split(' ')[0]}</span>
+              </Link>
+              <button type="button" className="logout-btn" onClick={handleLogout}>Logout</button>
+            </>
+          ) : (
+            <button type="button" className="auth-btn" onClick={handleLogin}>Login</button>
+          )}
 
-          <button type="button" className="auth-btn" disabled>
-            Sign In / Register
-          </button>
-
-          {/* Mobile Hamburger Toggle */}
           <button
             type="button"
             className="mobile-toggle-btn"
@@ -95,37 +154,20 @@ function Navbar({ currentUser = null, activeBookingsCount = 0 }) {
         </div>
       </div>
 
-      {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="mobile-nav-drawer">
-          {navLinks.length > 0 && (
-            <ul className="mobile-links-list">
-              {navLinks.map((link) => (
-                <li key={link.label}>
-                  <NavLink
-                    to={link.path}
-                    onClick={closeMobileMenu}
-                    className={({ isActive }) => (isActive ? 'active' : '')}
-                    end={link.path === '/'}
-                  >
-                    {link.label}
-                    {link.badge > 0 && <span className="nav-badge-count">{link.badge}</span>}
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-          )}
-
+          <ul className="mobile-links-list">{renderLinks('')}</ul>
           <div className="mobile-drawer-actions">
-            <Link to="/profile/consumer" onClick={closeMobileMenu} className="btn btn-secondary w-full">
-              👤 User Profile
-            </Link>
-            <Link to="/profile/provider" onClick={closeMobileMenu} className="btn btn-primary w-full">
-              🧰 Provider Profil
-            </Link>
-            <button type="button" className="btn btn-secondary w-full" disabled>
-              Sign In / Register
-            </button>
+            {currentUser ? (
+              <>
+                <Link to={accountPath} onClick={closeMobileMenu} className="btn btn-secondary w-full">
+                  {currentUser.role === 'provider' ? 'My Dashboard' : 'My Account'}
+                </Link>
+                <button type="button" className="btn btn-primary w-full" onClick={handleLogout}>Logout</button>
+              </>
+            ) : (
+              <button type="button" className="btn btn-primary w-full" onClick={handleLogin}>Login</button>
+            )}
           </div>
         </div>
       )}

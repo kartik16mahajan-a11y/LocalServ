@@ -1,5 +1,12 @@
 import { HOW_IT_WORKS_STEPS } from '../../../data/servicesData';
 
+/**
+ * Short 3-step "How It Works" explainer.
+ *
+ * Previously this was its own dedicated page (/how-it-works). It didn't
+ * need a full page of its own, so it now lives here as a compact section
+ * on the homepage instead.
+ */
 function HowItWorksSection() {
   return (
     <section className="how-it-works-section section-wrapper">

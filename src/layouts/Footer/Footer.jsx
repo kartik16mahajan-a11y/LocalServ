@@ -3,36 +3,17 @@ import { Link } from 'react-router-dom';
 import { SERVICES_DATA, CITIES } from '../../data/servicesData';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
-import { isValidEmail } from '../../utils/validators';
+import { isEmail } from '../../utils/validators';
 import './Footer.css';
 
-function useOptionalAuth() {
-  const ctx = useAuth();
-  if (ctx && typeof ctx === 'object') {
-    return {
-      currentUser: ctx.currentUser ?? null,
-      openAuth: ctx.openAuth ?? (() => {}),
-    };
-  }
-  return { currentUser: null, openAuth: () => {} };
-}
-
-function useOptionalToast() {
-  const toast = useToast();
-  if (toast && typeof toast.showToast === 'function') return toast.showToast;
-  if (typeof toast === 'function') return toast;
-  return (message) => {
-    if (message) window.alert(message);
-  };
-}
-
 function Footer() {
-  const { currentUser, openAuth } = useOptionalAuth();
-  const showToast = useOptionalToast();
+  const { currentUser, openAuth } = useAuth();
+  const { showToast } = useToast();
 
   const [cityInput, setCityInput] = useState('');
   const [emailInput, setEmailInput] = useState('');
 
+  // Check if the typed city is one of our cities
   const handleCityCheck = (e) => {
     e.preventDefault();
     const text = cityInput.trim().toLowerCase();
@@ -40,9 +21,7 @@ function Footer() {
       showToast('Please enter your city.', 'error');
       return;
     }
-    const found = CITIES.find((c) =>
-      c.name.toLowerCase().includes(text) || text.includes(c.name.toLowerCase().split(' ')[0])
-    );
+    const found = CITIES.find((c) => c.name.toLowerCase().includes(text) || text.includes(c.name.toLowerCase().split(' ')[0]));
     if (found) showToast(`Good news! LocalServ is available in ${found.name}.`);
     else showToast('Sorry, we are not in that city yet. Coming soon!', 'info');
     setCityInput('');
@@ -50,7 +29,7 @@ function Footer() {
 
   const handleSubscribe = (e) => {
     e.preventDefault();
-    if (!isValidEmail(emailInput)) {
+    if (!isEmail(emailInput)) {
       showToast('Please enter a valid email address.', 'error');
       return;
     }
@@ -61,6 +40,7 @@ function Footer() {
   return (
     <footer className="footer-root">
       <div className="container">
+        {/* Provider call-to-action: hidden for logged-in providers */}
         {currentUser?.role !== 'provider' && (
           <div className="footer-partner-banner">
             <div className="partner-banner-text">
@@ -109,13 +89,7 @@ function Footer() {
               <li><Link to="/plans">Membership Plans & Combos</Link></li>
               <li><Link to="/reviews">Customer Reviews</Link></li>
               {currentUser?.role === 'user' && <li><Link to="/bookings">My Bookings</Link></li>}
-              {currentUser && (
-                <li>
-                  <Link to={currentUser.role === 'provider' ? '/profile/provider' : '/profile/consumer'}>
-                    My Account
-                  </Link>
-                </li>
-              )}
+              {currentUser && <li><Link to={currentUser.role === 'provider' ? '/provider' : '/profile'}>My Account</Link></li>}
             </ul>
           </div>
 

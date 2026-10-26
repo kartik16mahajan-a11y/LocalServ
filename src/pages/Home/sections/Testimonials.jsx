@@ -1,20 +1,15 @@
 import { Link } from 'react-router-dom';
 import { useData } from '../../../context/DataContext';
-import { SERVICES_DATA, TESTIMONIALS } from '../../../data/servicesData';
+import { SERVICES_DATA } from '../../../data/servicesData';
+import { formatDate } from '../../../utils/format';
 
+// Shows the 3 newest reviews from the shared reviews list.
+// Reviews added on the Reviews page appear here automatically.
 function Testimonials() {
-  const data = useData();
-  const liveReviews = data && Array.isArray(data.reviews) ? data.reviews : [];
+  const { reviews } = useData();
+  const latest = [...reviews].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3);
 
-  const latest = (liveReviews.length > 0 ? liveReviews : TESTIMONIALS)
-    .slice()
-    .sort((a, b) => String(b.date).localeCompare(String(a.date)))
-    .slice(0, 3);
-
-  const getServiceTitle = (review) => {
-    if (review.service) return review.service;
-    return SERVICES_DATA.find((s) => s.id === review.serviceId)?.title || 'Service';
-  };
+  const getServiceTitle = (id) => SERVICES_DATA.find((s) => s.id === id)?.title || 'Service';
 
   return (
     <section className="testimonials-section section-wrapper">
@@ -32,7 +27,7 @@ function Testimonials() {
             <div key={review.id} className="testimonial-card">
               <div className="review-top-row">
                 <span className="rating-badge">{review.rating}/5</span>
-                <span className="review-date">{review.date}</span>
+                <span className="review-date">{formatDate(review.date)}</span>
               </div>
 
               <p className="review-text">"{review.comment}"</p>
@@ -42,7 +37,7 @@ function Testimonials() {
                 <div>
                   <h4 className="author-name">{review.name}</h4>
                   <div className="author-role">{review.role}</div>
-                  <span className="booked-service-tag">{getServiceTitle(review)}</span>
+                  <span className="booked-service-tag">{getServiceTitle(review.serviceId)}</span>
                 </div>
               </div>
             </div>

@@ -22,6 +22,7 @@ function WhyChooseUs() {
           ))}
         </div>
 
+        {/* Safety Callout */}
         <div className="safety-callout-card">
           <div className="safety-left">
             <span className="shield-large">🛡️</span>

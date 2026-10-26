@@ -1,19 +1,13 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { SERVICES_DATA } from '../../../data/servicesData';
 import { useData } from '../../../context/DataContext';
-import { formatCurrency } from '../../../utils/format';
+import { formatPrice } from '../../../utils/format';
 
 function ServicesPreview() {
-  const data = useData();
-  const navigate = useNavigate();
-  const startBooking = data && typeof data.startBooking === 'function' ? data.startBooking : null;
+  const { startBooking } = useData();
 
+  // Only 4 popular services on the homepage keeps it clean
   const popularServices = SERVICES_DATA.filter((s) => s.popular).slice(0, 4);
-
-  const handleBook = (service) => {
-    if (startBooking) startBooking(service);
-    else navigate(`/services?search=${encodeURIComponent(service.title)}`);
-  };
 
   return (
     <section className="services-preview-section section-wrapper">
@@ -40,9 +34,9 @@ function ServicesPreview() {
               <div className="preview-card-footer">
                 <div className="preview-pricing">
                   <span className="preview-price-label">Starts at</span>
-                  <span className="preview-price-val">{formatCurrency(service.startingPrice)}</span>
+                  <span className="preview-price-val">{formatPrice(service.startingPrice)}</span>
                 </div>
-                <button type="button" className="preview-book-btn" onClick={() => handleBook(service)}>
+                <button type="button" className="preview-book-btn" onClick={() => startBooking(service)}>
                   Book Now
                 </button>
               </div>

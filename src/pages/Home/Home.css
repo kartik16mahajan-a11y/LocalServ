@@ -355,6 +355,9 @@
 }
 
 .popular-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: rgba(255, 255, 255, 0.8);
@@ -364,6 +367,11 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+}
+
+.popular-tag-icon {
+  font-size: 0.95rem;
+  line-height: 1;
 }
 
 .popular-tag:hover {

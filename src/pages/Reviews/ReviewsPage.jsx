@@ -1,0 +1,1 @@
+export default function ReviewsPage() { return <section className="container" style={{ padding: '4rem 1rem' }}><span className="section-badge">Community feedback</span><h1 className="section-title">Reviews</h1><p className="section-subtitle">Reviews page skeleton — ready for your team's implementation.</p></section>; }

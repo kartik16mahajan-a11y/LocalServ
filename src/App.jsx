@@ -3,13 +3,21 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 
 import Navbar from './layouts/Navbar/Navbar';
 import Footer from './layouts/Footer/Footer';
+import ProtectedRoute from './components/ProtectedRoute';
+import AuthModal from './components/AuthModal';
+import BookingModal from './components/BookingModal';
 
 import HomePage from './pages/Home/HomePage';
 import ServicesPage from './pages/Services/ServicesPage';
+import BookingsPage from './pages/Bookings/BookingsPage';
+import PlansPage from './pages/Plans/PlansPage';
+import ReviewsPage from './pages/Reviews/ReviewsPage';
 import ConsumerProfile from './pages/ConsumerProfile/ConsumerProfile';
 import ProviderDashboard from './pages/ProviderDashboard/ProviderDashboard';
-import PlansPage from './pages/Plans/PlansPage';
-import { INITIAL_BOOKINGS } from './data/servicesData';
+import NotFound from './pages/NotFound/NotFound';
+
+import { useAuth } from './context/AuthContext';
+import { useData } from './context/DataContext';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -21,82 +29,40 @@ function ScrollToTop() {
   return null;
 }
 
-function PlaceholderPage({ title }) {
-  return (
-    <div className="container" style={{ padding: '5rem 1.5rem' }}>
-      <span className="section-badge">LocalServ</span>
-
-      <h1 className="section-title">{title}</h1>
-
-      <p className="section-subtitle">
-        This page will be added as part of the team's next contribution.
-      </p>
-    </div>
-  );
-}
-
 function App() {
-  const bookings = INITIAL_BOOKINGS;
-  const noop = () => { };
+  const { authModal } = useAuth();
+  const { bookingTarget, closeBooking } = useData();
 
   return (
     <div className="app-layout">
       <ScrollToTop />
-
-      <Navbar currentUser={null} activeBookingsCount={0} />
+      <Navbar />
 
       <main className="main-content-body">
         <Routes>
-
+          {/* Public pages */}
           <Route path="/" element={<HomePage />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/plans" element={<PlansPage />} />
+          <Route path="/reviews" element={<ReviewsPage />} />
 
+          {/* User-only pages */}
+          <Route path="/bookings" element={<ProtectedRoute role="user"><BookingsPage /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute role="user"><ConsumerProfile /></ProtectedRoute>} />
 
+          {/* Provider-only page */}
+          <Route path="/provider" element={<ProtectedRoute role="provider"><ProviderDashboard /></ProtectedRoute>} />
 
-          {/* Kartik's contribution */}
-          <Route
-            path="/services"
-            element={<ServicesPage onBookCategory={noop} />}
-          />
-
-          <Route
-            path="/profile/consumer"
-            element={<ConsumerProfile currentUser={null} />}
-          />
-
-          {/* Temporary pages for other team members */}
-
-          <Route path="/plans" element={<PlansPage onSelectPlan={noop} />} />
-
-          <Route
-            path="/bookings"
-            element={<PlaceholderPage title="My Bookings" />}
-          />
-
-          {/* <Route
-            path="/plans"
-            element={<PlaceholderPage title="Plans & Combos" />}
-          /> */}
-
-          {/* <Route
-            path="/profile/provider"
-            element={<PlaceholderPage title="Provider Profile" />}
-          /> */}
-          <Route
-            path="/profile/provider"
-            element={<ProviderDashboard currentUser={null} />}
-          />
-
-
-          {/* Unknown URL */}
-          <Route
-            path="*"
-            element={<PlaceholderPage title="Page Not Found" />}
-          />
-
+          {/* 404 */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
 
       <Footer />
+
+      {/* Popups are shown only when needed */}
+      {authModal.open && <AuthModal />}
+      {bookingTarget && <BookingModal service={bookingTarget} onClose={closeBooking} />}
     </div>
   );
 }

@@ -1,9 +1,3 @@
-/* Homepage-local tokens so the hero stays dark even if the shared theme is light. */
-.home-page-view {
-  --hero-bg-gradient: linear-gradient(135deg, #0f0e17 0%, #1a1040 50%, #0d1321 100%);
-  --radius-xl: 32px;
-}
-
 /* ==========================================================================
    LocalServ - Homepage Stylesheet (Redesigned)
    ========================================================================== */

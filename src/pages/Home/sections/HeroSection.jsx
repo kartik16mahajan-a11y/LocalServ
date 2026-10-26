@@ -8,11 +8,12 @@ function HeroSection() {
   const [query, setQuery] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [activeCount] = useState(0);
   const navigate = useNavigate();
   const inputRef = useRef(null);
 
   const suggestions = query.length > 0
-    ? SERVICES_DATA.filter((s) =>
+    ? SERVICES_DATA.filter(s =>
         s.title.toLowerCase().includes(query.toLowerCase()) ||
         s.tagline.toLowerCase().includes(query.toLowerCase())
       ).slice(0, 5)
@@ -21,11 +22,7 @@ function HeroSection() {
   const handleSearch = (e) => {
     e.preventDefault();
     const text = query.trim();
-    const params = new URLSearchParams();
-    if (text) params.set('search', text);
-    if (selectedCity) params.set('city', selectedCity);
-    const qs = params.toString();
-    navigate(qs ? `/services?${qs}` : '/services');
+    navigate(text ? `/services?search=${encodeURIComponent(text)}` : '/services');
     setShowSuggestions(false);
   };
 
@@ -51,12 +48,14 @@ function HeroSection() {
 
   return (
     <section className="hero-section">
+      {/* Animated background orbs */}
       <div className="hero-bg-orb hero-orb-1" />
       <div className="hero-bg-orb hero-orb-2" />
       <div className="hero-bg-orb hero-orb-3" />
 
       <div className="container">
         <div className="hero-inner">
+          {/* Trust badge */}
           <div className="hero-trust-badge">
             <span className="trust-badge-dot" />
             <span>Verified local service professionals</span>
@@ -64,6 +63,7 @@ function HeroSection() {
             <span className="trust-badge-highlight">4.9★ avg rating</span>
           </div>
 
+          {/* Heading */}
           <h1 className="hero-title">
             Trusted Help for Your Home,{' '}
             <span className="hero-title-highlight">
@@ -76,8 +76,10 @@ function HeroSection() {
             tutors with fixed pricing and on-time arrival — across 5 cities.
           </p>
 
+          {/* Search card */}
           <div className="hero-search-card">
             <form className="hero-search-form" onSubmit={handleSearch}>
+              {/* City picker */}
               <div className="hero-city-select-wrap">
                 <span className="hero-input-icon">📍</span>
                 <select
@@ -95,6 +97,7 @@ function HeroSection() {
 
               <div className="hero-search-divider" />
 
+              {/* Autocomplete search */}
               <div className="hero-query-wrap" ref={inputRef}>
                 <span className="hero-input-icon">🔍</span>
                 <input
@@ -118,6 +121,7 @@ function HeroSection() {
                   </button>
                 )}
 
+                {/* Dropdown suggestions */}
                 {showSuggestions && suggestions.length > 0 && (
                   <div className="hero-suggestions-dropdown">
                     {suggestions.map((s) => (
@@ -145,6 +149,7 @@ function HeroSection() {
               </button>
             </form>
 
+            {/* Popular tags */}
             <div className="hero-popular-searches">
               <span className="popular-label">Trending:</span>
               {POPULAR_SEARCHES.map((term) => (
@@ -160,6 +165,7 @@ function HeroSection() {
             </div>
           </div>
 
+          {/* CTA links */}
           <div className="hero-cta-links">
             <Link to="/services" className="hero-cta-btn hero-cta-primary">
               Browse All Services →
@@ -169,6 +175,7 @@ function HeroSection() {
             </Link>
           </div>
 
+          {/* Stats */}
           <div className="hero-stats-row">
             <div className="hero-stat">
               <strong>20+</strong>

@@ -1,7 +1,6 @@
 /* Footer Stylesheet — Enhanced */
 
 .footer-root {
-  --radius-xl: 32px;
   background: linear-gradient(180deg, #0a0914 0%, #0f0e17 100%);
   color: #cbd5e1;
   padding: 5rem 0 2.5rem;

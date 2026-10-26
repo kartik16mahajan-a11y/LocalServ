@@ -3,8 +3,10 @@ import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from '../../context/DataContext';
 import { useToast } from '../../context/ToastContext';
+import { getInitials } from '../../utils/format';
 import './Navbar.css';
 
+// Links shown for each type of visitor
 const GUEST_LINKS = [
   { label: 'Home', path: '/' },
   { label: 'Services', path: '/services' },
@@ -26,66 +28,33 @@ const PROVIDER_LINKS = [
   { label: 'Reviews', path: '/reviews' },
 ];
 
-function getInitials(name = '') {
-  return name
-    .split(' ')
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0].toUpperCase())
-    .join('');
-}
-
-function useOptionalAuth() {
-  const ctx = useAuth();
-  if (ctx && typeof ctx === 'object') {
-    return {
-      currentUser: ctx.currentUser ?? null,
-      openAuth: ctx.openAuth ?? (() => {}),
-      logout: ctx.logout ?? (() => {}),
-    };
-  }
-  return { currentUser: null, openAuth: () => {}, logout: () => {} };
-}
-
-function useOptionalBookings() {
-  const ctx = useData();
-  if (ctx && Array.isArray(ctx.bookings)) return ctx.bookings;
-  return [];
-}
-
-function useOptionalToast() {
-  const toast = useToast();
-  if (toast && typeof toast.showToast === 'function') return toast.showToast;
-  if (typeof toast === 'function') return toast;
-  return () => {};
-}
-
-function Navbar({ currentUser: currentUserProp = null, activeBookingsCount = 0 }) {
-  const { currentUser: authUser, openAuth, logout } = useOptionalAuth();
-  const bookings = useOptionalBookings();
-  const showToast = useOptionalToast();
+function Navbar() {
+  const { currentUser, openAuth, logout } = useAuth();
+  const { bookings } = useData();
+  const { showToast } = useToast();
   const navigate = useNavigate();
-
-  const currentUser = authUser ?? currentUserProp;
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  // Add a subtle shadow once the page has scrolled.
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Choose links according to who is logged in
   let navLinks = GUEST_LINKS;
   if (currentUser?.role === 'user') navLinks = USER_LINKS;
   if (currentUser?.role === 'provider') navLinks = PROVIDER_LINKS;
 
+  // Badge on "My Bookings" = this user's active bookings
   const activeCount = currentUser
     ? bookings.filter((b) => b.userId === currentUser.id && (b.status === 'Pending' || b.status === 'Confirmed')).length
-    : activeBookingsCount;
+    : 0;
 
-  const accountPath = currentUser?.role === 'provider' ? '/profile/provider' : '/profile/consumer';
+  const accountPath = currentUser?.role === 'provider' ? '/provider' : '/profile';
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
 

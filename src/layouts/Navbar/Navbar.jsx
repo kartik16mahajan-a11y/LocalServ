@@ -31,6 +31,7 @@ function Navbar({ currentUser = null, activeBookingsCount = 0 }) {
     { label: 'Home', path: '/' },
     { label: 'Services', path: '/services' },
     { label: 'My Bookings', path: '/bookings', badge: activeBookingsCount },
+    { label: 'Reviews', path: '/reviews' },
     { label: 'Plans & Combos', path: '/plans' },
   ];
 

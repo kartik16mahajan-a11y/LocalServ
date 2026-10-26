@@ -3,10 +3,17 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 
 import Navbar from './layouts/Navbar/Navbar';
 import Footer from './layouts/Footer/Footer';
+import ProtectedRoute from './components/ProtectedRoute';
+import AuthModal from './components/AuthModal';
+import BookingModal from './components/BookingModal';
+
 import BookingsPage from './pages/Bookings/BookingsPage';
+import ReviewsPage from './pages/Reviews/ReviewsPage';
 import ServicesPage from './pages/Services/ServicesPage';
 import ConsumerProfile from './pages/ConsumerProfile/ConsumerProfile';
-import { INITIAL_BOOKINGS } from './data/servicesData';
+
+import { useAuth } from './context/AuthContext';
+import { useData } from './context/DataContext';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -19,10 +26,8 @@ function ScrollToTop() {
 }
 
 function App() {
-  // Evaluation 1 version: UI + routing only.
-  // No authentication, browser storage, booking persistence, popups, or toasts.
-  const bookings = INITIAL_BOOKINGS;
-
+  const { authModal } = useAuth();
+  const { bookingTarget, closeBooking } = useData();
   const noop = () => {};
 
   return (
@@ -33,43 +38,27 @@ function App() {
 
       <main className="main-content-body">
         <Routes>
-          {/* <Route path="/" element={<HomePage onBookCategory={noop} />} /> */}
           <Route path="/services" element={<ServicesPage onBookCategory={noop} />} />
+          <Route path="/reviews" element={<ReviewsPage />} />
           <Route
             path="/bookings"
             element={
-              <BookingsPage
-                bookings={bookings}
-                onCancelBooking={noop}
-                onRescheduleBooking={noop}
-                onBookAgain={noop}
-                onOpenNewBooking={noop}
-              />
+              <ProtectedRoute role="user">
+                <BookingsPage />
+              </ProtectedRoute>
             }
           />
-          {/* <Route path="/plans" element={<PlansPage onSelectPlan={noop} />} /> */}
-
-          {/* Static provider profile/dashboard page for Evaluation 1. */}
-          {/* <Route
-            path="/dashboard"
-            element={<ProviderDashboard currentUser={null} />}
-          />
-          <Route
-            path="/profile/provider"
-            element={<ProviderDashboard currentUser={null} />}
-          /> */}
-
-          {/* Static customer profile page. */}
           <Route
             path="/profile/consumer"
             element={<ConsumerProfile currentUser={null} />}
           />
-
-          {/* <Route path="*" element={<HomePage onBookCategory={noop} />} /> */}
         </Routes>
       </main>
 
       <Footer />
+
+      {authModal.open && <AuthModal />}
+      {bookingTarget && <BookingModal service={bookingTarget} onClose={closeBooking} />}
     </div>
   );
 }

@@ -322,50 +322,6 @@ export const SERVICES_DATA = [
   }
 ];
 
-export const INITIAL_BOOKINGS = [
-  {
-    id: 'BK-9482',
-    serviceId: 'electrician',
-    serviceTitle: 'Electrician Service',
-    icon: '⚡',
-    category: 'Home Repair',
-    date: '2026-08-22',
-    timeSlot: '10:00 AM - 12:00 PM',
-    city: 'Mumbai',
-    address: 'Flat 402, Sunshine Heights, Bandra West',
-    status: 'Confirmed', // 'Confirmed', 'Completed', 'Cancelled'
-    assignedSpecialist: 'Rajesh Sharma (Certified Specialist)',
-    contactPhone: '+91 98201 44321',
-    otp: '4829',
-    basePrice: 249,
-    safetyFee: 29,
-    discount: 0,
-    totalAmount: 278,
-    notes: 'Switchboard sparking and ceiling fan regulator check.'
-  },
-  {
-    id: 'BK-8721',
-    serviceId: 'house-cleaning',
-    serviceTitle: 'House Deep Cleaning',
-    icon: '🧹',
-    category: 'Cleaning & Housekeeping',
-    date: '2026-08-18',
-    timeSlot: '01:00 PM - 03:00 PM',
-    city: 'Mumbai',
-    address: 'Flat 402, Sunshine Heights, Bandra West',
-    status: 'Completed',
-    assignedSpecialist: 'Anita Patil (Sanitization Expert)',
-    contactPhone: '+91 98332 99120',
-    otp: '1942',
-    basePrice: 599,
-    safetyFee: 29,
-    discount: 0,
-    totalAmount: 628,
-    rating: 5,
-    notes: 'Full apartment deep sanitization and kitchen scrubbing.'
-  }
-];
-
 export const HOW_IT_WORKS_STEPS = [
   {
     step: '01',
@@ -414,40 +370,74 @@ export const WHY_CHOOSE_US = [
     desc: 'Our customer care desk is always active to coordinate, reschedule, or address any concerns smoothly.'
   },
   {
-    icon: '⭐',
+    icon: '🔁',
     title: 'Re-work Satisfaction Guarantee',
     desc: 'If a service does not meet your quality expectations, we will send another senior specialist to fix it free of charge.'
   }
 ];
 
-export const TESTIMONIALS = [
-  {
-    id: 1,
-    name: 'Kavita Ramanathan',
-    role: 'Homeowner, Bandra',
-    service: 'House Cleaning & AC Repair',
-    rating: 5,
-    date: '2 days ago',
-    comment: 'Booked deep cleaning before Diwali and an AC servicing. The professionals were on time, extremely polite, and thoroughly professional. The upfront billing made it completely stress-free!'
-  },
-  {
-    id: 2,
-    name: 'Vikram Mehta',
-    role: 'Tech Lead, Koramangala',
-    service: 'Computer & Mobile Repair',
-    rating: 5,
-    date: '1 week ago',
-    comment: 'My MacBook screen broke in the middle of a release sprint. The technician arrived within 40 minutes and replaced the display at my doorstep with genuine parts. Unbeatable service!'
-  },
-  {
-    id: 3,
-    name: 'Sunita & Arvind Roy',
-    role: 'Resident, Gurgaon',
-    service: 'Movers & Packers + Electrician',
-    rating: 5,
-    date: '3 weeks ago',
-    comment: 'Moving homes is usually a nightmare, but LocalServ made it seamless. The packaging team handled our glassware with extreme care, and the electrician mounted our appliances on the same day.'
-  }
+// Time slots offered while booking / rescheduling
+export const TIME_SLOTS = [
+  '08:00 AM - 10:00 AM',
+  '10:00 AM - 12:00 PM',
+  '12:00 PM - 02:00 PM',
+  '02:00 PM - 04:00 PM',
+  '04:00 PM - 06:00 PM',
+  '06:00 PM - 08:00 PM',
 ];
 
+// Membership plans (monthly / yearly prices in INR)
+export const PLANS = [
+  {
+    id: 'basic',
+    name: 'LocalServ Standard',
+    monthly: 0,
+    yearly: 0,
+    description: 'Essential access to 20+ verified home and personal service professionals.',
+    features: [
+      'Access to all 20+ service categories',
+      'Standard booking & verified dispatch',
+      'Transparent upfront fixed pricing',
+      'Standard customer support',
+    ],
+  },
+  {
+    id: 'plus',
+    name: 'LocalServ Premium Pass',
+    monthly: 299,
+    yearly: 2499,
+    popular: true,
+    description: 'Maximum savings, zero inspection fees, and priority pro allocation for families.',
+    features: [
+      '15% flat discount on all 20 categories',
+      'Priority express dispatch (under 25 mins)',
+      'Zero inspection & visit charges',
+      '₹25,000 complimentary damage cover',
+      '24/7 VIP priority support hotline',
+      'Free unlimited booking rescheduling',
+    ],
+  },
+  {
+    id: 'business',
+    name: 'LocalServ Enterprise / Villa',
+    monthly: 799,
+    yearly: 7999,
+    description: 'For large residences, offices, villas, and commercial property maintenance.',
+    features: [
+      'Dedicated relationship manager',
+      'Monthly routine electrical & plumbing audit',
+      '2 free deep cleaning sessions per year',
+      '20% discount on all on-demand repairs',
+      'Itemized business GST invoices',
+      '₹50,000 extended damage insurance',
+    ],
+  },
+];
 
+// Bundled combos. serviceId decides which provider type receives the request.
+export const COMBOS = [
+  { id: 'combo-1', serviceId: 'house-cleaning', icon: '🏡', title: 'Home Care Elite Combo', desc: 'Deep House Cleaning + AC Servicing + Plumbing Inspection', originalPrice: 1697, bundlePrice: 1299, save: 'Save 25%' },
+  { id: 'combo-2', serviceId: 'movers-packers', icon: '🚚', title: 'New Home Shifting Setup', desc: 'Movers & Packers + Electrician Fitting + Wall Touchup Painter', originalPrice: 3597, bundlePrice: 2799, save: 'Save 22%' },
+  { id: 'combo-3', serviceId: 'computer-repair', icon: '💻', title: 'Smart Gadget & IT Care', desc: 'Laptop Servicing + Mobile Screen Diagnostic + Wi-Fi Tuning', originalPrice: 1197, bundlePrice: 899, save: 'Save 25%' },
+  { id: 'combo-4', serviceId: 'home-chef', icon: '👨‍🍳', title: 'Family Wellness & Chef', desc: 'Home Chef Weekly Plan + Deep Kitchen Sanitization', originalPrice: 1498, bundlePrice: 1150, save: 'Save 23%' },
+];

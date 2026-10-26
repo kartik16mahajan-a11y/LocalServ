@@ -1,4 +1,6 @@
+import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { SERVICES_DATA, CITIES } from '../../../data/servicesData';
 
 const POPULAR_SEARCHES = [
   { label: 'Electrician', icon: '⚡' },
@@ -39,6 +41,16 @@ function HeroSection() {
   const handleQuickSearch = (term) => {
     navigate(`/services?search=${encodeURIComponent(term)}`);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (inputRef.current && !inputRef.current.contains(e.target)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <section className="hero-section">
@@ -146,7 +158,7 @@ function HeroSection() {
             {/* Popular tags */}
             <div className="hero-popular-searches">
               <span className="popular-label">Trending:</span>
-              {POPULAR_SEARCHES.map((term) => (
+              {POPULAR_SEARCHES.map(({ label, icon }) => (
                 <button
                   key={label}
                   type="button"

@@ -16,13 +16,13 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-      <ToastProvider>
-        <AuthProvider>
-          <DataProvider>
-            <App />
-          </DataProvider>
-        </AuthProvider>
-      </ToastProvider>
+        <ToastProvider>
+          <AuthProvider>
+            <DataProvider>
+              <App />
+            </DataProvider>
+          </AuthProvider>
+        </ToastProvider>
       </BrowserRouter>
     </Provider>
   </StrictMode>

@@ -1,5 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSearchTerm, setActiveGroup, setSortBy, resetFilters } from '../../store/servicesFilterSlice';
 import { SERVICES_DATA, CATEGORY_FILTERS } from '../../data/servicesData';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from '../../context/DataContext';
@@ -15,9 +17,15 @@ function ServicesPage() {
   // The hero search box sends text in the URL: /services?search=plumber
   const [searchParams] = useSearchParams();
 
-  const [activeGroup, setActiveGroup] = useState('all');
-  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
-  const [sortBy, setSortBy] = useState('popular');
+  const dispatch = useDispatch();
+  const { searchTerm, activeGroup, sortBy } = useSelector((state) => state.servicesFilter);
+  const urlSearch = searchParams.get('search') || '';
+
+  useEffect(() => {
+    dispatch(resetFilters());
+    if (urlSearch) dispatch(setSearchTerm(urlSearch));
+    return () => dispatch(resetFilters());
+  }, [dispatch, urlSearch]);
   const [sortMenuOpen, setSortMenuOpen] = useState(false);
   const sortMenuRef = useRef(null);
   const sortOptions = [
@@ -64,12 +72,6 @@ function ServicesPage() {
     return list;
   }, [activeGroup, searchTerm, sortBy]);
 
-  const resetFilters = () => {
-    setSearchTerm('');
-    setActiveGroup('all');
-    setSortBy('popular');
-  };
-
   // Heart button: save / remove a service from the user's favourites
   const toggleFavourite = (serviceId) => {
     if (!currentUser) {
@@ -108,10 +110,10 @@ function ServicesPage() {
                 type="text"
                 placeholder="Search services (e.g. electrician, cleaning, chef, tailor)..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => dispatch(setSearchTerm(e.target.value))}
               />
               {searchTerm && (
-                <button type="button" className="clear-search-btn" onClick={() => setSearchTerm('')} aria-label="Clear search">✕</button>
+                <button type="button" className="clear-search-btn" onClick={() => dispatch(setSearchTerm(''))} aria-label="Clear search">✕</button>
               )}
             </div>
 
@@ -140,7 +142,7 @@ function ServicesPage() {
                         aria-selected={sortBy === option.value}
                         key={option.value}
                         className={`sort-dropdown-option ${sortBy === option.value ? 'selected' : ''}`}
-                        onClick={() => { setSortBy(option.value); setSortMenuOpen(false); }}
+                        onClick={() => { dispatch(setSortBy(option.value)); setSortMenuOpen(false); }}
                       >
                         <span className="sort-option-copy">
                           <span className="sort-option-label">{option.label}</span>
@@ -161,7 +163,7 @@ function ServicesPage() {
                 key={f.id}
                 type="button"
                 className={`filter-chip-btn ${activeGroup === f.id ? 'active' : ''}`}
-                onClick={() => setActiveGroup(f.id)}
+                onClick={() => dispatch(setActiveGroup(f.id))}
               >
                 {f.label}
               </button>
@@ -231,7 +233,7 @@ function ServicesPage() {
             <span className="no-results-icon">🔍</span>
             <h3>No services found</h3>
             <p>Try clearing your search term or selecting another category.</p>
-            <button type="button" className="btn btn-primary" onClick={resetFilters}>Reset Filters</button>
+            <button type="button" className="btn btn-primary" onClick={() => dispatch(resetFilters())}>Reset Filters</button>
           </div>
         )}
       </div>
